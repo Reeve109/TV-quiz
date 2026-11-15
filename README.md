@@ -22,12 +22,11 @@
 
 ## 截图 Screenshots
 
-<!-- TODO: 在真机/电视上截图后放到 docs/screenshots/ 并在此引用 -->
-_（占位）待补：首页（计时状态）、答题页、锁屏倒计时页、家长设置页。_
+以下截图来自安卓电视模拟器（Android TV 13）全流程实测：
 
 | 首页 | 答题页 | 锁屏页 | 家长设置 |
 | --- | --- | --- | --- |
-| 待补 | 待补 | 待补 | 待补 |
+| ![首页](docs/screenshots/home.png) | ![答题页](docs/screenshots/quiz.png) | ![锁屏页](docs/screenshots/lock.png) | ![家长设置](docs/screenshots/settings.png) |
 
 ## 构建 Build
 
