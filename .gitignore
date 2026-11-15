@@ -1,0 +1,28 @@
+# Build outputs
+app/build/
+build/
+.gradle/
+out/
+
+# Local config (contains local SDK path)
+local.properties
+
+# Signing keys — never commit real keystores
+*.keystore
+*.jks
+# Note: the manual build script generates a throwaway debug keystore under
+# app/build/manual/debug.keystore on each run; it is a build artifact, not a
+# release key, and is excluded by the rules above / app/build/ rule.
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS / misc
+.DS_Store
+*.idsig
+TVQuiz.apk
+app/build/outputs/
