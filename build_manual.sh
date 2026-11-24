@@ -23,7 +23,7 @@ import pathlib, sys
 src = pathlib.Path("app/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
 src = src.replace(
  '<manifest xmlns:android="http://schemas.android.com/apk/res/android">',
- '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sunzhe.tvquiz" android:versionCode="4" android:versionName="1.3">\n    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="33" />'
+ '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sunzhe.tvquiz" android:versionCode="5" android:versionName="1.3.1">\n    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="33" />'
 )
 pathlib.Path(sys.argv[1]).write_text(src, encoding="utf-8")
 PY
@@ -44,15 +44,23 @@ cp "$OUT/unsigned.apk" "$OUT/aligned.apk"
 "$BT/zipalign" -f 4 "$OUT/aligned.apk" "$OUT/final.apk"
 
 echo "[6/6] sign (debug key)"
-if [ ! -f "$OUT/debug.keystore" ]; then
-  keytool -genkeypair -keystore "$OUT/debug.keystore" -storepass android -keypass android \
+# Use ONE persistent debug keystore, generated once and reused by every build.
+# The old script created a fresh keystore inside $OUT (which is wiped at the
+# start of every build), so every APK had a different signature and Android
+# refused to install it as an update over the previous build ("signature
+# mismatch") — the old version had to be uninstalled first, every time.
+# Override the location with TVQUIZ_KEYSTORE if needed.
+KEYSTORE="${TVQUIZ_KEYSTORE:-$PWD/.keystore/debug.keystore}"
+mkdir -p "$(dirname "$KEYSTORE")"
+if [ ! -f "$KEYSTORE" ]; then
+  keytool -genkeypair -keystore "$KEYSTORE" -storepass android -keypass android \
     -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
     -dname "CN=Android Debug,O=Android,C=US" -noprompt
 fi
-"$BT/apksigner" sign --ks "$OUT/debug.keystore" --ks-pass pass:android --key-pass pass:android \
+"$BT/apksigner" sign --ks "$KEYSTORE" --ks-pass pass:android --key-pass pass:android \
   --out app/build/outputs/apk/debug/app-debug.apk "$OUT/final.apk" || {
     mkdir -p app/build/outputs/apk/debug
-    "$BT/apksigner" sign --ks "$OUT/debug.keystore" --ks-pass pass:android --key-pass pass:android \
+    "$BT/apksigner" sign --ks "$KEYSTORE" --ks-pass pass:android --key-pass pass:android \
       --out app/build/outputs/apk/debug/app-debug.apk "$OUT/final.apk"
   }
 cp app/build/outputs/apk/debug/app-debug.apk TVQuiz.apk

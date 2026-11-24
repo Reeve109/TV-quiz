@@ -53,7 +53,7 @@ bash build_manual.sh
 # 产物：app/build/outputs/apk/debug/app-debug.apk，并复制为根目录 TVQuiz.apk
 ```
 
-注意：手动脚本每次会在 `app/build/manual/` 下生成一个临时 debug keystore（已 gitignore，不入库），因此每次手动构建的签名可能不同，覆盖安装时如提示签名不一致请先卸载旧版。
+注意：手动脚本首次构建时会在 `.keystore/debug.keystore` 生成一个 debug keystore（已 gitignore，不入库），之后每次构建都复用它，因此连续构建的 APK 签名一致，可以直接覆盖安装升级（v1.3.1 起；更早的版本签名各不相同，从旧版升级到 v1.3.1 仍需先卸载一次）。可用环境变量 `TVQUIZ_KEYSTORE` 指定其他 keystore 路径。
 
 ## 安装 Install（摘要）
 
@@ -83,6 +83,10 @@ bash build_manual.sh
 | 年级 | 2 年级 |
 | 每轮观看 | 30 分钟 |
 | 答错休息 | 30 分钟 |
+
+## v1.3.1 修复（2026-11-24）
+
+- **新版无法覆盖安装旧版**：手动构建脚本原来每次都生成一把新的 debug 签名密钥（且放在每次构建都会清空的目录里），导致每个 APK 签名都不同，安卓以「签名不一致」拒绝覆盖安装，必须先卸载旧版。v1.3.1 改为固定复用 `.keystore/debug.keystore`（可用 `TVQUIZ_KEYSTORE` 覆盖路径），此后构建的 APK 可直接覆盖升级。注意：从 v1.3 及更早版本升级到 v1.3.1 时，因旧版签名是随机的，仍需最后卸载一次。
 
 ## v1.3 修复（2026-11-24）
 

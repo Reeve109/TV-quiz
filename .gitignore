@@ -10,9 +10,10 @@ local.properties
 # Signing keys — never commit real keystores
 *.keystore
 *.jks
-# Note: the manual build script generates a throwaway debug keystore under
-# app/build/manual/debug.keystore on each run; it is a build artifact, not a
-# release key, and is excluded by the rules above / app/build/ rule.
+# Note: the manual build script generates ONE persistent debug keystore at
+# .keystore/debug.keystore on first use and reuses it for every build, so
+# successive APKs share a signature and can be installed as updates. It is a
+# local build artifact, not a release key, and is excluded by the rules above.
 
 # IDE
 .idea/
