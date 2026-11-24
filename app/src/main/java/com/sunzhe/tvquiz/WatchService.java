@@ -22,6 +22,8 @@ public class WatchService extends Service {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private Prefs prefs;
     private long lastAlertAttemptMs = 0;
+    /** Wall-clock baseline for watch-time accumulation (see consumeElapsedSeconds). */
+    private long lastTickMs = 0;
 
     private final Runnable ticker = new Runnable() {
         @Override public void run() {
@@ -59,21 +61,48 @@ public class WatchService extends Service {
         }
     }
 
+    /**
+     * Watch time must be accumulated from REAL elapsed wall-clock time, not by
+     * counting ticker invocations. The old code added +1s on every tick() call,
+     * and onStartCommand() runs tick() immediately — so anything that (re)started
+     * the service instantly burned a second: pressing OK on the main screen's
+     * focused "开始看电视" button, or simply returning to MainActivity while
+     * monitoring was on. With the timestamp baseline below, an immediate extra
+     * tick adds 0s, and only genuinely elapsed seconds are counted.
+     *
+     * Returns the whole seconds elapsed since the previous counting tick and
+     * advances the baseline, keeping the sub-second remainder for next time.
+     */
+    private int consumeElapsedSeconds() {
+        long now = System.currentTimeMillis();
+        if (lastTickMs == 0) { lastTickMs = now; return 0; }
+        long elapsed = now - lastTickMs;
+        if (elapsed < 1000) return 0;
+        long secs = elapsed / 1000;
+        lastTickMs += secs * 1000L;
+        return (int) secs;
+    }
+
+    /** Drop accumulated time (used in states where watch time must not accrue). */
+    private void resetTickBaseline() { lastTickMs = System.currentTimeMillis(); }
+
     private void tick() {
         if (prefs == null) prefs = new Prefs(this);
         // Parent is entering a PIN (from quiz/lock/main): never launch quiz/lock over it.
-        if (PinActivity.active) return;
+        if (PinActivity.active) { resetTickBaseline(); return; }
 
         // Quiz or lock screen is already in front: make sure no gate/alert lingers.
         if (quizActive || lockActive) {
             OverlayGate.hide();
             cancelAlert();
+            resetTickBaseline();
             return;
         }
 
         // Locked state takes priority
         if (prefs.isLocked()) {
             ensureAlert(LockActivity.class, true);
+            resetTickBaseline();
             return;
         }
         // If lock just expired, reset watched so a new quiz round can start after lock period
@@ -85,6 +114,7 @@ public class WatchService extends Service {
         long limitSec = (long) prefs.getWatchMinutes() * 60L;
         if (prefs.getWatchedSeconds() >= limitSec) {
             ensureAlert(QuizActivity.class, false);
+            resetTickBaseline();
             return;
         }
 
@@ -94,11 +124,14 @@ public class WatchService extends Service {
             cancelAlert();
         }
 
-        // Count only when screen is on / interactive
+        // Count only when screen is on / interactive, using real elapsed time.
         PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
         boolean screenOn = pm == null || pm.isInteractive();
         if (screenOn) {
-            prefs.setWatchedSeconds(prefs.getWatchedSeconds() + 1);
+            int secs = consumeElapsedSeconds();
+            if (secs > 0) prefs.setWatchedSeconds(prefs.getWatchedSeconds() + secs);
+        } else {
+            resetTickBaseline();
         }
     }
 

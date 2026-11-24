@@ -32,6 +32,14 @@ public class MainActivity extends Activity {
         Button btnParent = findViewById(R.id.btnParent);
 
         btnStart.setOnClickListener(v -> {
+            // This button holds the initial focus, so remote OK presses land
+            // here. It must be idempotent: re-pressing while already monitoring
+            // must not restart the service or disturb the timer in any way.
+            if (prefs.isMonitoring()) {
+                Toast.makeText(this, "已经在计时啦", Toast.LENGTH_SHORT).show();
+                refresh();
+                return;
+            }
             prefs.setMonitoring(true);
             startWatchService();
             Toast.makeText(this, "开始计时啦，看满" + prefs.getWatchMinutes() + "分钟会出题", Toast.LENGTH_LONG).show();
