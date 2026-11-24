@@ -25,7 +25,7 @@ public class ParentSettingsActivity extends Activity {
         ScrollView scroll = new ScrollView(this);
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setPadding(56, 40, 56, 40);
+        root.setPadding(dp(40), dp(28), dp(40), dp(28));
         root.setBackgroundColor(Color.parseColor("#16213A"));
         scroll.addView(root);
 
@@ -120,21 +120,26 @@ public class ParentSettingsActivity extends Activity {
         }
     }
 
+    private int dp(int v) { return Math.round(v * getResources().getDisplayMetrics().density); }
+
     private TextView label(String s, int sp, String color) {
         TextView t = new TextView(this);
         t.setText(s); t.setTextSize(sp); t.setTextColor(Color.parseColor(color));
         t.setGravity(Gravity.LEFT);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.topMargin = 22; t.setLayoutParams(lp);
+        lp.topMargin = dp(16); t.setLayoutParams(lp);
         return t;
     }
 
     private Button btn(String s) {
         Button b = new Button(this);
         b.setText(s); b.setTextSize(24); b.setFocusable(true);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(760, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.topMargin = 10; b.setLayoutParams(lp);
+        // Was a hard-coded 760 RAW PIXELS wide, which overflowed / shrank
+        // unpredictably depending on the TV's density. Use the full width.
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = dp(8); b.setLayoutParams(lp);
         return b;
     }
 }

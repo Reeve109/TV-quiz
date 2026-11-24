@@ -56,6 +56,7 @@ public class LockActivity extends Activity {
     @Override protected void onResume() {
         super.onResume();
         WatchService.lockActive = true;
+        OverlayGate.hide();
         handler.removeCallbacks(updater);
         handler.post(updater);
     }

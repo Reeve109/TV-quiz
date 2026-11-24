@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
             startWatchService();
             Toast.makeText(this, "开始计时啦，看满" + prefs.getWatchMinutes() + "分钟会出题", Toast.LENGTH_LONG).show();
             refresh();
+            maybeRequestOverlay();
         });
         btnQuizNow.setOnClickListener(v -> {
             Intent i = new Intent(this, QuizActivity.class);
@@ -54,13 +55,33 @@ public class MainActivity extends Activity {
         } else if (prefs.isMonitoring()) {
             startWatchService();
         }
-        maybeRequestOverlay();
     }
 
+    /**
+     * Android 10+ silently blocks background apps from starting an Activity, so
+     * when the watch time is up while the child is in another app, the quiz can
+     * only be forced to the front through the overlay ("draw over other apps")
+     * permission. Ask for it once, when the parent presses Start — without it
+     * the forced popup cannot work on modern Android TV.
+     */
     private void maybeRequestOverlay() {
-        // Overlay is optional (quiz uses a full Activity, not a window overlay),
-        // but some TV brands restrict background activity starts; overlay helps on those.
-        // We do not force it on first launch to keep setup simple.
+        if (Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
+            Toast.makeText(this,
+                    "还需要允许「显示在其他应用上层」，到时间才能强制弹出答题页。正在打开设置，请把本应用的开关打开，然后按返回键回来。",
+                    Toast.LENGTH_LONG).show();
+            try {
+                Intent i = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivity(i);
+            } catch (Exception e) {
+                try { startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)); }
+                catch (Exception ignored) {}
+            }
+        }
+    }
+
+    private boolean overlayGranted() {
+        return Build.VERSION.SDK_INT < 23 || Settings.canDrawOverlays(this);
     }
 
     public void startWatchService() {
@@ -85,7 +106,8 @@ public class MainActivity extends Activity {
         tvStatus.setText(status);
         tvInfo.setText("当前：" + prefs.getGrade() + "年级 · 每轮看" + prefs.getWatchMinutes()
                 + "分钟 · 答错休息" + prefs.getLockMinutes() + "分钟 · 计时"
-                + (prefs.isMonitoring() ? "已开启" : "未开启"));
+                + (prefs.isMonitoring() ? "已开启" : "未开启")
+                + " · 强制弹窗权限" + (overlayGranted() ? "已开启" : "未开启（点「开始看电视」按提示开启，否则到时间弹不出来）"));
     }
 
     @Override protected void onActivityResult(int req, int res, Intent data) {

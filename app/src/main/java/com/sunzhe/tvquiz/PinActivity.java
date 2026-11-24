@@ -22,47 +22,57 @@ public class PinActivity extends Activity {
     @Override protected void onResume() { super.onResume(); active = true; }
     @Override protected void onPause() { super.onPause(); active = false; }
 
+    private int dp(int v) { return Math.round(v * getResources().getDisplayMetrics().density); }
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // NOTE: sizes here must be dp, not raw px — the old version used raw px
+        // for the keypad (200x110px buttons), which rendered tiny/overflowing
+        // depending on the TV's density. The root is also scrollable so the
+        // keypad can never be cut off on low-height screens.
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setGravity(Gravity.CENTER);
-        root.setPadding(48, 48, 48, 48);
+        root.setPadding(dp(24), dp(24), dp(24), dp(24));
         root.setBackgroundColor(Color.parseColor("#16213A"));
 
         TextView title = new TextView(this);
         title.setText("请输入家长PIN码");
-        title.setTextColor(Color.WHITE); title.setTextSize(36); title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.WHITE); title.setTextSize(30); title.setGravity(Gravity.CENTER);
         root.addView(title);
 
         tvDots = new TextView(this);
         tvDots.setText("○ ○ ○ ○");
-        tvDots.setTextColor(Color.parseColor("#FFC93C")); tvDots.setTextSize(40);
+        tvDots.setTextColor(Color.parseColor("#FFC93C")); tvDots.setTextSize(32);
         tvDots.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.topMargin = 24; tvDots.setLayoutParams(lp);
+        lp.topMargin = dp(16); tvDots.setLayoutParams(lp);
         root.addView(tvDots);
 
         GridLayout grid = new GridLayout(this);
         grid.setColumnCount(3);
         LinearLayout.LayoutParams glp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        glp.topMargin = 28; grid.setLayoutParams(glp);
+        glp.topMargin = dp(20); grid.setLayoutParams(glp);
         String[] keys = {"1","2","3","4","5","6","7","8","9","删除","0","取消"};
         Button first = null;
         for (String k : keys) {
             Button b = new Button(this);
-            b.setText(k); b.setTextSize(28);
+            b.setText(k); b.setTextSize(24);
             GridLayout.LayoutParams blp = new GridLayout.LayoutParams();
-            blp.width = 200; blp.height = 110; blp.setMargins(8,8,8,8);
+            blp.width = dp(120); blp.height = dp(60); blp.setMargins(dp(6), dp(6), dp(6), dp(6));
             b.setLayoutParams(blp);
             b.setOnClickListener(v -> onKey(k));
             grid.addView(b);
             if (first == null) first = b;
         }
         root.addView(grid);
-        setContentView(root);
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.setBackgroundColor(Color.parseColor("#16213A"));
+        scroll.addView(root);
+        setContentView(scroll);
         if (first != null) first.requestFocus();
     }
 

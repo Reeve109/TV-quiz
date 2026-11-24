@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:padding="48dp"
-    android:background="@color/bg" android:gravity="center_horizontal">
+    android:fillViewport="true" android:background="@color/bg">
 
-    <TextView android:id="@+id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="📺 看电视答题" android:textColor="@color/text" android:textSize="46sp" android:textStyle="bold" />
-    <TextView android:id="@+id/tvStatus" android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" android:text="正在读取状态…" android:textColor="@color/subtext" android:textSize="28sp" />
-    <TextView android:id="@+id/tvInfo" android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" android:text="" android:textColor="@color/subtext" android:textSize="22sp" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="32dp"
+        android:gravity="center_horizontal">
 
-    <Button android:id="@+id/btnStart" android:layout_width="560dp" android:layout_height="wrap_content"
-        android:layout_marginTop="36dp" android:text="开始看电视（开始计时）" android:textSize="28sp"
-        android:textColor="@color/text" android:background="@drawable/btn_bg" android:focusable="true" />
-    <Button android:id="@+id/btnQuizNow" android:layout_width="560dp" android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" android:text="先试着答一次题（练习）" android:textSize="28sp"
-        android:textColor="@color/text" android:background="@drawable/btn_bg" android:focusable="true" />
-    <Button android:id="@+id/btnParent" android:layout_width="560dp" android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" android:text="家长设置（需要PIN码）" android:textSize="28sp"
-        android:textColor="@color/text" android:background="@drawable/btn_bg" android:focusable="true" />
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginTop="28dp" android:textColor="@color/subtext" android:textSize="20sp"
-        android:text="用遥控器上下键选择，按确认键。用满时间后会自动出题。" />
-</LinearLayout>
+        <TextView android:id="@+id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="📺 看电视答题" android:textColor="@color/text" android:textSize="40sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvStatus" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" android:text="正在读取状态…" android:textColor="@color/subtext" android:textSize="24sp" />
+        <TextView android:id="@+id/tvInfo" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:gravity="center" android:text="" android:textColor="@color/subtext" android:textSize="19sp" />
+
+        <Button android:id="@+id/btnStart" android:layout_width="match_parent" android:layout_height="56dp"
+            android:layout_marginTop="28dp" android:text="开始看电视（开始计时）" android:textSize="24sp"
+            android:textColor="@color/text" android:background="@drawable/btn_bg" android:focusable="true" />
+        <Button android:id="@+id/btnQuizNow" android:layout_width="match_parent" android:layout_height="56dp"
+            android:layout_marginTop="12dp" android:text="先试着答一次题（练习）" android:textSize="24sp"
+            android:textColor="@color/text" android:background="@drawable/btn_bg" android:focusable="true" />
+        <Button android:id="@+id/btnParent" android:layout_width="match_parent" android:layout_height="56dp"
+            android:layout_marginTop="12dp" android:text="家长设置（需要PIN码）" android:textSize="24sp"
+            android:textColor="@color/text" android:background="@drawable/btn_bg" android:focusable="true" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" android:textColor="@color/subtext" android:textSize="18sp"
+            android:text="用遥控器上下键选择，按确认键。用满时间后会自动出题。" />
+    </LinearLayout>
+</ScrollView>

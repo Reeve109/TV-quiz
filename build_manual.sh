@@ -23,7 +23,7 @@ import pathlib, sys
 src = pathlib.Path("app/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
 src = src.replace(
  '<manifest xmlns:android="http://schemas.android.com/apk/res/android">',
- '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sunzhe.tvquiz" android:versionCode="1" android:versionName="1.0">\n    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="33" />'
+ '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sunzhe.tvquiz" android:versionCode="2" android:versionName="1.1">\n    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="33" />'
 )
 pathlib.Path(sys.argv[1]).write_text(src, encoding="utf-8")
 PY

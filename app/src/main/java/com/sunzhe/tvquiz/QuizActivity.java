@@ -107,7 +107,7 @@ public class QuizActivity extends Activity {
         }
     }
 
-    @Override protected void onResume() { super.onResume(); WatchService.quizActive = true; }
+    @Override protected void onResume() { super.onResume(); WatchService.quizActive = true; OverlayGate.hide(); }
     @Override protected void onPause() { super.onPause(); WatchService.quizActive = false; }
 
     @Override public void onBackPressed() {
