@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- NOTE: no <padding> in these shapes. Shape padding is added ON TOP of the
+     Button's own padding and shrank the text area so much that, combined with
+     a fixed button height, option text was vertically clipped (the bottom of
+     Chinese glyphs was cut off). Padding belongs on the views, not here. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <corners android:radius="14dp" />
             <solid android:color="#FFFFC93C" />
-            <padding android:left="20dp" android:top="14dp" android:right="20dp" android:bottom="14dp" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="14dp" />
             <solid android:color="#FF2E4470" />
-            <padding android:left="20dp" android:top="14dp" android:right="20dp" android:bottom="14dp" />
         </shape>
     </item>
 </selector>

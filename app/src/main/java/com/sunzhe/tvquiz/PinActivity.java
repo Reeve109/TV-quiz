@@ -60,8 +60,9 @@ public class PinActivity extends Activity {
         for (String k : keys) {
             Button b = new Button(this);
             b.setText(k); b.setTextSize(24);
+            b.setMinHeight(dp(60));
             GridLayout.LayoutParams blp = new GridLayout.LayoutParams();
-            blp.width = dp(120); blp.height = dp(60); blp.setMargins(dp(6), dp(6), dp(6), dp(6));
+            blp.width = dp(120); blp.height = GridLayout.LayoutParams.WRAP_CONTENT; blp.setMargins(dp(6), dp(6), dp(6), dp(6));
             b.setLayoutParams(blp);
             b.setOnClickListener(v -> onKey(k));
             grid.addView(b);

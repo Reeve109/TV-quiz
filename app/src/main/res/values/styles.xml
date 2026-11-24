@@ -7,7 +7,11 @@
     </style>
     <style name="QuizBtn">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">56dp</item>
+        <!-- wrap_content + minHeight, NOT a fixed height: a fixed 56dp height
+             (plus background/view padding) left less room than one line of
+             26sp text needs, clipping the glyphs top/bottom. The button must
+             be allowed to grow with its text; the page scrolls if needed. -->
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">56dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:textSize">26sp</item>
@@ -17,6 +21,9 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:includeFontPadding">true</item>
         <item name="android:singleLine">false</item>
         <item name="android:maxLines">2</item>
     </style>

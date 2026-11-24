@@ -15,7 +15,8 @@
             android:layout_marginTop="18dp" android:text="30:00" android:textColor="@color/text" android:textSize="64sp" android:textStyle="bold" />
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="8dp" android:gravity="center" android:text="倒计时结束后再答题，全部答对就能继续看。" android:textColor="@color/subtext" android:textSize="20sp" />
-        <Button android:id="@+id/btnParentLock" android:layout_width="match_parent" android:layout_height="52dp"
+        <Button android:id="@+id/btnParentLock" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="52dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:paddingLeft="20dp" android:paddingRight="20dp"
             android:layout_marginTop="24dp" android:text="家长入口（PIN）" android:textSize="20sp"
             android:textColor="@color/text" android:background="@drawable/btn_bg" android:focusable="true" />
     </LinearLayout>

@@ -27,7 +27,9 @@
             <Button android:id="@+id/btnOpt3" style="@style/QuizBtn" />
         </LinearLayout>
 
-        <Button android:id="@+id/btnParentQuiz" android:layout_width="match_parent" android:layout_height="48dp"
+        <Button android:id="@+id/btnParentQuiz" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="48dp" android:paddingTop="8dp" android:paddingBottom="8dp"
+            android:paddingLeft="20dp" android:paddingRight="20dp"
             android:layout_marginTop="14dp" android:text="家长入口（PIN）" android:textSize="18sp"
             android:textColor="@color/subtext" android:background="@drawable/btn_bg" android:focusable="true" />
     </LinearLayout>

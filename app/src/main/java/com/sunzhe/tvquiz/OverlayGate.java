@@ -75,8 +75,10 @@ public class OverlayGate {
         go.setTextSize(26);
         go.setFocusable(true);
         go.setFocusableInTouchMode(true);
+        go.setMinHeight(dp(app, 64));
+        go.setPadding(dp(app, 20), dp(app, 10), dp(app, 20), dp(app, 10));
         LinearLayout.LayoutParams blp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(app, 64));
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         blp.topMargin = dp(app, 28);
         go.setLayoutParams(blp);
         go.setOnClickListener(v -> {
