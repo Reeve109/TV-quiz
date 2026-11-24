@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Button label color paired with @drawable/btn_bg: dark navy text on the
+     bright yellow focused background, white text on the dark unfocused
+     background. Without this, focused buttons showed pale text on yellow and
+     (with the system default button style, e.g. the PIN pad) the focused key
+     was barely distinguishable from unfocused ones. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:color="#16213A" />
+    <item android:state_pressed="true" android:color="#16213A" />
+    <item android:color="#FFFFFF" />
+</selector>

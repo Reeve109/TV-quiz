@@ -60,6 +60,12 @@ public class PinActivity extends Activity {
         for (String k : keys) {
             Button b = new Button(this);
             b.setText(k); b.setTextSize(24);
+            // High-contrast focus state: the default system button style made
+            // the focused key only a shade lighter than the rest — easy to
+            // lose track of on a TV. Use the shared selector background
+            // (yellow when focused) with its paired text colors instead.
+            b.setBackgroundResource(R.drawable.btn_bg);
+            b.setTextColor(getResources().getColorStateList(R.color.btn_text, getTheme()));
             b.setMinHeight(dp(60));
             GridLayout.LayoutParams blp = new GridLayout.LayoutParams();
             blp.width = dp(120); blp.height = GridLayout.LayoutParams.WRAP_CONTENT; blp.setMargins(dp(6), dp(6), dp(6), dp(6));

@@ -18,6 +18,6 @@
         <Button android:id="@+id/btnParentLock" android:layout_width="match_parent" android:layout_height="wrap_content"
             android:minHeight="52dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:paddingLeft="20dp" android:paddingRight="20dp"
             android:layout_marginTop="24dp" android:text="家长入口（PIN）" android:textSize="20sp"
-            android:textColor="@color/text" android:background="@drawable/btn_bg" android:focusable="true" />
+            android:textColor="@color/btn_text" android:background="@drawable/btn_bg" android:focusable="true" />
     </LinearLayout>
 </ScrollView>

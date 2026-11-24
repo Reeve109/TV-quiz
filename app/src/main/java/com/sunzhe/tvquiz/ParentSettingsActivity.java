@@ -135,6 +135,10 @@ public class ParentSettingsActivity extends Activity {
     private Button btn(String s) {
         Button b = new Button(this);
         b.setText(s); b.setTextSize(24); b.setFocusable(true);
+        // Same high-contrast focus treatment as the PIN pad: yellow focused
+        // background with dark text, dark background with white text otherwise.
+        b.setBackgroundResource(R.drawable.btn_bg);
+        b.setTextColor(getResources().getColorStateList(R.color.btn_text, getTheme()));
         // Was a hard-coded 760 RAW PIXELS wide, which overflowed / shrank
         // unpredictably depending on the TV's density. Use the full width.
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(

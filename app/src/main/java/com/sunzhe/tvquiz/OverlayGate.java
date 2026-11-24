@@ -73,6 +73,8 @@ public class OverlayGate {
         Button go = new Button(app);
         go.setText(isLock ? "查看休息倒计时" : "开始答题 ▶");
         go.setTextSize(26);
+        go.setBackgroundResource(R.drawable.btn_bg);
+        go.setTextColor(app.getResources().getColorStateList(R.color.btn_text, app.getTheme()));
         go.setFocusable(true);
         go.setFocusableInTouchMode(true);
         go.setMinHeight(dp(app, 64));
